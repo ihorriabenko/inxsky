@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Text, StyleSheet, Pressable, Keyboard } from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
 
 type Props = {
   navigate: 'SignUp' | 'SignIn';

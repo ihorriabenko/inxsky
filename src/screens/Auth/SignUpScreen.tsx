@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { AuthButton } from '../components';
+import { AuthButton } from '../../components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const initialUserState = {

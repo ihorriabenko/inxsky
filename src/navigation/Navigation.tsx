@@ -1,38 +1,96 @@
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StartScreen, SignUpScreen, SignInScreen } from '../screens';
-import { RootStackParamList } from './navigation.type';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import { StartScreen, SignUpScreen, SignInScreen } from '../screens/Auth';
+import { ProfileScreen, CreatePostScreen, PostsScreen } from '../screens/Main';
+import { BottomTabParamList, RootStackParamList } from './navigation.type';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const AuthStack = createNativeStackNavigator<RootStackParamList>();
+const MainTab = createBottomTabNavigator<BottomTabParamList>();
 
-const NativeStackNavigation = () => {
+const AuthStackNavigation = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Start">
-        <Stack.Screen
-          name="Start"
-          component={StartScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Group
-          screenOptions={{
-            headerTitle: () => (
-              <Image
-                source={require('../../assets/images/logo.png')}
-                style={{ width: 50, height: 50 }}
-              />
-            ),
-            headerTitleAlign: 'center',
-            headerShadowVisible: false,
-          }}
-        >
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-        </Stack.Group>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthStack.Navigator initialRouteName="Start">
+      <AuthStack.Screen
+        name="Start"
+        component={StartScreen}
+        options={{ headerShown: false }}
+      />
+      <AuthStack.Group
+        screenOptions={{
+          headerTitle: () => (
+            <Image
+              source={require('../../assets/images/logo.png')}
+              style={{ width: 50, height: 50 }}
+            />
+          ),
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
+        }}
+      >
+        <AuthStack.Screen name="SignUp" component={SignUpScreen} />
+        <AuthStack.Screen name="SignIn" component={SignInScreen} />
+      </AuthStack.Group>
+    </AuthStack.Navigator>
   );
 };
 
-export default NativeStackNavigation;
+const MainTabNavigation = () => {
+  return (
+    <MainTab.Navigator
+      screenOptions={{ headerShown: false, tabBarShowLabel: false }}
+    >
+      <MainTab.Screen
+        name="Posts"
+        component={PostsScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <AntDesign
+              name="home"
+              size={24}
+              color={focused ? '#0085ff' : 'black'}
+            />
+          ),
+        }}
+      />
+      <MainTab.Screen
+        name="CreatePost"
+        component={CreatePostScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <AntDesign
+              name="pluscircleo"
+              size={24}
+              color={focused ? '#0085ff' : 'black'}
+            />
+          ),
+        }}
+      />
+      <MainTab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <AntDesign
+              name="user"
+              size={28}
+              color={focused ? '#0085ff' : 'black'}
+            />
+          ),
+        }}
+      />
+    </MainTab.Navigator>
+  );
+};
+
+const isAuth = true;
+
+export const Navigation = () => {
+  return (
+    <NavigationContainer>
+      {isAuth ? <MainTabNavigation /> : <AuthStackNavigation />}
+    </NavigationContainer>
+  );
+};

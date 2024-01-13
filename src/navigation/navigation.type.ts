@@ -6,8 +6,14 @@ export type RootStackParamList = {
   SignIn: undefined;
 };
 
+export type BottomTabParamList = {
+  Profile: undefined;
+  CreatePost: undefined;
+  Posts: undefined;
+};
+
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
+    interface RootParamList extends RootStackParamList, BottomTabParamList {}
   }
 }

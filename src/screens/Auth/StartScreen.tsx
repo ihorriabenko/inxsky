@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AuthButton } from '../components';
+import { AuthButton } from '../../components';
 
 export const StartScreen = () => {
   const inserts = useSafeAreaInsets();
@@ -19,7 +19,7 @@ export const StartScreen = () => {
       <View style={s.imageWrapper}>
         <Image
           style={s.image}
-          source={require('../../assets/images/logo.png')}
+          source={require('../../../assets/images/logo.png')}
         />
         <Text style={s.title}>Freedom</Text>
         <Text style={s.subtitle}>Be free</Text>

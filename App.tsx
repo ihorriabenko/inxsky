@@ -1,10 +1,10 @@
-import NativeStackNavigation from './src/navigation/Navigation';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {Navigation} from './src/navigation/Navigation';
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <NativeStackNavigation />
+      <Navigation />
     </SafeAreaProvider>
   );
 }

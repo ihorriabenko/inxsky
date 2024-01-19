@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { AuthButton } from '../../components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAppDispatch } from '../../redux/redux.hook';
+import { signIn } from '../../redux/auth/auth.action';
 
 const initialUserState = {
   email: '',
@@ -18,6 +20,7 @@ const initialUserState = {
 export const SignInScreen = () => {
   const insets = useSafeAreaInsets();
   const [user, setUser] = useState(initialUserState);
+  const dispatch = useAppDispatch()
 
   const handleInputChange = (key: string, value: string) => {
     setUser((prevState) => ({
@@ -27,6 +30,7 @@ export const SignInScreen = () => {
   };
 
   const handleFormSubmit = () => {
+    dispatch(signIn(user))
     setUser(initialUserState);
   };
 

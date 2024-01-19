@@ -7,8 +7,10 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { AuthButton } from '../../components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AuthButton } from '../../components';
+import { useAppDispatch } from '../../redux/redux.hook';
+import { signUp } from '../../redux/auth/auth.action';
 
 const initialUserState = {
   username: '',
@@ -19,6 +21,7 @@ const initialUserState = {
 export const SignUpScreen = () => {
   const insets = useSafeAreaInsets();
   const [user, setUser] = useState(initialUserState);
+  const dispatch = useAppDispatch();
 
   const handleInputChange = (key: string, value: string) => {
     setUser((prevState) => ({
@@ -28,6 +31,7 @@ export const SignUpScreen = () => {
   };
 
   const handleFormSubmit = () => {
+    dispatch(signUp(user));
     setUser(initialUserState);
   };
 

@@ -5,12 +5,45 @@ import { Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { StartScreen, SignUpScreen, SignInScreen } from '../screens/Auth';
 import { ProfileScreen, CreatePostScreen, PostsScreen } from '../screens/Main';
-import { BottomTabParamList, RootStackParamList } from './navigation.type';
+import {
+  BottomTabParamList,
+  PostStackParamList,
+  AuthStackParamList,
+  ProfileStackParamList,
+} from './navigation.type';
+import { CommentsScreen, MapScreen, PostScreen } from '../screens/Post';
+import { useEffect, useState } from 'react';
+import { auth } from '../firebase/firebase.config';
+import { onAuthStateChanged } from 'firebase/auth';
 
-const AuthStack = createNativeStackNavigator<RootStackParamList>();
+const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 const MainTab = createBottomTabNavigator<BottomTabParamList>();
+const PostStack = createNativeStackNavigator<PostStackParamList>();
+const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
 
-const AuthStackNavigation = () => {
+const PostNativeStack = () => {
+  return (
+    <PostStack.Navigator
+      initialRouteName="Post"
+      screenOptions={{ headerShown: false }}
+    >
+      <PostStack.Screen name="Post" component={PostScreen} />
+      <PostStack.Screen name="Comments" component={CommentsScreen} />
+      <PostStack.Screen name="Map" component={MapScreen} />
+    </PostStack.Navigator>
+  );
+};
+
+const ProfileNativeStack = () => {
+  return (
+    <ProfileStack.Navigator initialRouteName="Profile">
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+      <ProfileStack.Screen name="PostStack" component={PostNativeStack} />
+    </ProfileStack.Navigator>
+  );
+};
+
+const AuthNativeStackNavigation = () => {
   return (
     <AuthStack.Navigator initialRouteName="Start">
       <AuthStack.Screen
@@ -66,11 +99,14 @@ const MainTabNavigation = () => {
               color={focused ? '#0085ff' : 'black'}
             />
           ),
+          // tabBarStyle: {
+          //   display: 'none'
+          // }
         }}
       />
       <MainTab.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="ProfileNativeStack"
+        component={ProfileNativeStack}
         options={{
           tabBarIcon: ({ focused }) => (
             <AntDesign
@@ -85,12 +121,18 @@ const MainTabNavigation = () => {
   );
 };
 
-const isAuth = true;
-
 export const Navigation = () => {
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setIsAuth(!!user);
+    });
+  }, []);
+
   return (
     <NavigationContainer>
-      {isAuth ? <MainTabNavigation /> : <AuthStackNavigation />}
+      {isAuth ? <MainTabNavigation /> : <AuthNativeStackNavigation />}
     </NavigationContainer>
   );
 };

@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { AuthButton } from '../../components';
+import { AuthButton } from '../../components/AuthButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppDispatch } from '../../redux/redux.hook';
 import { signIn } from '../../redux/auth/auth.action';
@@ -43,6 +43,7 @@ export const SignInScreen = () => {
           onChangeText={(value) => handleInputChange('email', value)}
           value={user.email}
           placeholder="Email"
+          autoFocus
         />
         <TextInput
           style={s.input}

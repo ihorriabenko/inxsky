@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AuthButton } from '../../components';
+import { AuthButton } from '../../components/AuthButton';
 import { useAppDispatch } from '../../redux/redux.hook';
 import { signUp } from '../../redux/auth/auth.action';
 

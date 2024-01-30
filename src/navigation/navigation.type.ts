@@ -2,10 +2,11 @@ import {
   CompositeScreenProps,
   NavigatorScreenParams,
 } from '@react-navigation/native';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Location} from '../lib/type';
 
-export type { NativeStackScreenProps } from '@react-navigation/native-stack';
-export type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+export type {NativeStackScreenProps} from '@react-navigation/native-stack';
+export type {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 export type ProfileScreenProps = CompositeScreenProps<
   NativeStackScreenProps<ProfileStackParamList, 'Profile'>,
   NativeStackScreenProps<PostStackParamList>
@@ -24,9 +25,9 @@ export type BottomTabParamList = {
 };
 
 export type PostStackParamList = {
-  Post: undefined;
+  Post: { location: Location | undefined, url: string | undefined, description: string };
   Comments: undefined;
-  Map: undefined;
+  Map: { location: Location };
 };
 
 export type ProfileStackParamList = {
@@ -40,6 +41,7 @@ declare global {
       extends AuthStackParamList,
         BottomTabParamList,
         PostStackParamList,
-        ProfileStackParamList {}
+        ProfileStackParamList {
+    }
   }
 }

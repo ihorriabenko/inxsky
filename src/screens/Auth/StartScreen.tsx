@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AuthButton } from '../../components';
+import { AuthButton } from '../../components/AuthButton';
 
 export const StartScreen = () => {
   const inserts = useSafeAreaInsets();

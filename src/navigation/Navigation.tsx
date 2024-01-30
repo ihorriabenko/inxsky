@@ -1,47 +1,25 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
+import { auth } from '../firebase/firebase.config';
+import { onAuthStateChanged } from 'firebase/auth';
 import { StartScreen, SignUpScreen, SignInScreen } from '../screens/Auth';
 import { ProfileScreen, CreatePostScreen, PostsScreen } from '../screens/Main';
+import { CommentsScreen, MapScreen, PostScreen } from '../screens/Post';
+import { Logo } from '../components/Logo';
 import {
   BottomTabParamList,
   PostStackParamList,
   AuthStackParamList,
   ProfileStackParamList,
 } from './navigation.type';
-import { CommentsScreen, MapScreen, PostScreen } from '../screens/Post';
-import { useEffect, useState } from 'react';
-import { auth } from '../firebase/firebase.config';
-import { onAuthStateChanged } from 'firebase/auth';
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 const MainTab = createBottomTabNavigator<BottomTabParamList>();
 const PostStack = createNativeStackNavigator<PostStackParamList>();
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
-
-const PostNativeStack = () => {
-  return (
-    <PostStack.Navigator
-      initialRouteName="Post"
-      screenOptions={{ headerShown: false }}
-    >
-      <PostStack.Screen name="Post" component={PostScreen} />
-      <PostStack.Screen name="Comments" component={CommentsScreen} />
-      <PostStack.Screen name="Map" component={MapScreen} />
-    </PostStack.Navigator>
-  );
-};
-
-const ProfileNativeStack = () => {
-  return (
-    <ProfileStack.Navigator initialRouteName="Profile">
-      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
-      <ProfileStack.Screen name="PostStack" component={PostNativeStack} />
-    </ProfileStack.Navigator>
-  );
-};
 
 const AuthNativeStackNavigation = () => {
   return (
@@ -53,13 +31,8 @@ const AuthNativeStackNavigation = () => {
       />
       <AuthStack.Group
         screenOptions={{
-          headerTitle: () => (
-            <Image
-              source={require('../../assets/images/logo.png')}
-              style={{ width: 50, height: 50 }}
-            />
-          ),
-          headerTitleAlign: 'center',
+          headerTitle: () => <Logo />,
+          headerTitleAlign: 'center', // Android does not align 'center' by default
           headerShadowVisible: false,
         }}
       >
@@ -73,7 +46,8 @@ const AuthNativeStackNavigation = () => {
 const MainTabNavigation = () => {
   return (
     <MainTab.Navigator
-      screenOptions={{ headerShown: false, tabBarShowLabel: false }}
+      screenOptions={{ tabBarShowLabel: false, headerShown: false }}
+      initialRouteName="ProfileNativeStack"
     >
       <MainTab.Screen
         name="Posts"
@@ -99,9 +73,9 @@ const MainTabNavigation = () => {
               color={focused ? '#0085ff' : 'black'}
             />
           ),
-          // tabBarStyle: {
-          //   display: 'none'
-          // }
+          tabBarStyle: {
+            display: 'none',
+          },
         }}
       />
       <MainTab.Screen
@@ -118,6 +92,32 @@ const MainTabNavigation = () => {
         }}
       />
     </MainTab.Navigator>
+  );
+};
+
+const PostNativeStack = () => {
+  return (
+    <PostStack.Navigator initialRouteName="Post">
+      <PostStack.Screen name="Post" component={PostScreen} />
+      <PostStack.Screen name="Comments" component={CommentsScreen} />
+      <PostStack.Screen
+        name="Map"
+        component={MapScreen}
+        options={{ headerTitleAlign: 'center' }}
+      />
+    </PostStack.Navigator>
+  );
+};
+
+const ProfileNativeStack = () => {
+  return (
+    <ProfileStack.Navigator
+      initialRouteName="Profile"
+      screenOptions={{ headerShown: false }}
+    >
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+      <ProfileStack.Screen name="PostStack" component={PostNativeStack} />
+    </ProfileStack.Navigator>
   );
 };
 

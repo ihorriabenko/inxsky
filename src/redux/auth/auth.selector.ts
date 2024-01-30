@@ -5,3 +5,6 @@ export const selectAuthStatus = (state: RootState) => ({
   isError: state.auth.isError,
   errorMessage: state.auth.errorMessage,
 });
+
+export const selectUserId = (state: RootState) => state.auth.user.userId;
+export const selectUsername = (state: RootState) => state.auth.user.username;

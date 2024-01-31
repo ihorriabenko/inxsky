@@ -1,47 +1,45 @@
-import {
+import type {
   CompositeScreenProps,
   NavigatorScreenParams,
 } from '@react-navigation/native';
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Location} from '../lib/type';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { Location } from '../lib/type';
 
-export type {NativeStackScreenProps} from '@react-navigation/native-stack';
-export type {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-export type ProfileScreenProps = CompositeScreenProps<
-  NativeStackScreenProps<ProfileStackParamList, 'Profile'>,
-  NativeStackScreenProps<PostStackParamList>
->;
-
-export type AuthStackParamList = {
+export type RootStackParamList = {
+  Home: NavigatorScreenParams<HomeTabParamList>;
   Start: undefined;
-  SignUp: undefined;
   SignIn: undefined;
+  SignUp: undefined;
+  PostDetails: {
+    location: Location | undefined;
+    url: string | undefined;
+    description: string;
+  };
+  Map: {
+    latitude: number;
+    longitude: number;
+  };
+  NotFound: undefined;
 };
 
-export type BottomTabParamList = {
-  ProfileNativeStack: NavigatorScreenParams<ProfileStackParamList>;
-  CreatePost: undefined;
-  Posts: undefined;
-};
+export type RootStackScreenProps<T extends keyof RootStackParamList> =
+  NativeStackScreenProps<RootStackParamList, T>;
 
-export type PostStackParamList = {
-  Post: { location: Location | undefined, url: string | undefined, description: string };
-  Comments: undefined;
-  Map: { location: Location };
-};
-
-export type ProfileStackParamList = {
+export type HomeTabParamList = {
   Profile: undefined;
-  PostStack: NavigatorScreenParams<PostStackParamList>;
+  Post: undefined;
+  Feed: undefined;
 };
+
+export type HomeTabScreenProps<T extends keyof HomeTabParamList> =
+  CompositeScreenProps<
+    BottomTabScreenProps<HomeTabParamList, T>,
+    RootStackScreenProps<keyof RootStackParamList>
+  >;
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList
-      extends AuthStackParamList,
-        BottomTabParamList,
-        PostStackParamList,
-        ProfileStackParamList {
-    }
+    interface RootParamList extends RootStackParamList {}
   }
 }

@@ -1,14 +1,11 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { PostStackParamList } from '../../navigation/navigation.type';
+import { RootStackScreenProps } from '../../navigation/navigation.type';
 
-type Props = NativeStackScreenProps<PostStackParamList, 'Map'>;
+type Props = RootStackScreenProps<'Map'>;
 export const MapScreen = (props: Props) => {
   const { route } = props;
-  const {
-    location: { latitude, longitude },
-  } = route.params;
+  const { latitude, longitude } = route.params;
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

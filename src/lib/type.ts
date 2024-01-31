@@ -1,6 +1,6 @@
 export type Location = {
-  country: string | null;
-  city: string | null;
+  country: string;
+  city: string;
   latitude: number;
   longitude: number;
 };

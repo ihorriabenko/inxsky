@@ -2,9 +2,9 @@ import { Location } from '../../lib/type';
 
 export type postToUpload = {
   userId: string;
-  selectedImageUri: string;
+  selectedImageUri: string | null;
   description: string;
-  location: Location;
+  location: Location | null;
 };
 
 export type PostsFromFirebase = {
